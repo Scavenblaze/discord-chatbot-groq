@@ -15,11 +15,14 @@ intents.message_content = True
 
 groq_client = Groq(api_key=groq_key)
 
-mood = 'helpful' #default mood
-
 
 #discord code
 class MyClient(discord.Client):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.mood = 'helpful' #default mood
+        
 
     async def on_ready(self):
         print(f'Logged in as {self.user}!')
@@ -35,7 +38,8 @@ class MyClient(discord.Client):
             #sets bot's mood
             if message.content.startswith('!moodset '):
                 mood = message.content[9:]
-                await message.channel.send(f"bot's mood has been set to {mood}")
+                await message.channel.send(f"bot's mood has been set to {self.mood}")
+                return
                 
 
             if message.content.startswith('!'):  #prefix for the bot
@@ -47,7 +51,7 @@ class MyClient(discord.Client):
                     "role":
                     "system",
                     "content":
-                    f"You are a {mood} assistant. You reply with medium answers." #dynamically sets mood
+                    f"You are a {self.mood} assistant. You reply with medium answers." #dynamically sets mood
                 }
                 
                 #initialize the chat history
