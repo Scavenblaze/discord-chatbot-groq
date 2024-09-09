@@ -37,7 +37,7 @@ class MyClient(discord.Client):
             
             #sets bot's mood
             if message.content.startswith('!moodset '):
-                mood = message.content[9:]
+                self.mood = message.content[9:]
                 await message.channel.send(f"bot's mood has been set to {self.mood}")
                 return
                 
